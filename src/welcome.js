@@ -4,8 +4,8 @@ export default function Welcome() {
     const keyCheck = e => {
         if (e.key == "Enter" && e.target.value) {
             e.preventDefault();
-            localStorage.setItem("myValueInLocalStorage", e.target.value);
-            // socket.emit("chatMessage", e.target.value);
+            localStorage.setItem("playerName", e.target.value);
+            location.replace("/question");
         }
     };
 

@@ -32,14 +32,14 @@ if (process.env.NODE_ENV != "production") {
 
 // ROUTES ***************************
 
+app.get("/questions/json", async (req, res) => {
+    let questions = await db.get3Questions();
+    res.json(questions.rows);
+});
+
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
-
-(async () => {
-    let x = await db.get3Questions();
-    console.log("x !!!: ", x);
-})();
 
 app.listen(8080, function() {
     console.log("I'm listening.");
