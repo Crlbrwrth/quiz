@@ -1,0 +1,31 @@
+NECESSARY
+
+- set up boilerplate & react components, no data-flow (8h)
+- put data from frontend into database & vice versa (4h)
+- handle the whole redux state thing (8h)
+- basic design (4h)
+- complications (8h)
+
+NICE TO HAVE
+- react event handlers for interactivity (4h)
+- Socket.io for Multiplayer (12h)
+
+POSSIBLE ADDITIONAL FEATURES
+
+- implementing images/other media for questions
+- Multiple dificulty levels for questions
+- submit own questions
+
+BASIC FLOW
+- welcome page that starts the quiz
+- Array of questions gets pulled from Database into State & Local Storage
+- After every Question, update player score in state & Local Storage
+- After last question, display total score & send result to database, then show position in alltime highscore
+
+TO DO
+
+- set up all React boiler plate code
+- set up basic components (welcome, questions, result)
+- set up redux boiler plate code
+- get questions from db via server & redux to the screen
+- save points from answers in state
