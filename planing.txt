@@ -1,6 +1,6 @@
 NECESSARY
 
-- set up boilerplate & react components, no data-flow (8h)
+- set up boilerplate & react components, no data-flow (8h) (4)
 - put data from frontend into database & vice versa (4h)
 - handle the whole redux state thing (8h)
 - basic design (4h)

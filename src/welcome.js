@@ -1,6 +1,8 @@
 import React from "react";
 
 export default function Welcome() {
+    localStorage.setItem("question_nr", 0);
+
     const keyCheck = e => {
         if (e.key == "Enter" && e.target.value) {
             e.preventDefault();
