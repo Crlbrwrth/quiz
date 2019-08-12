@@ -13,3 +13,7 @@ exports.insertScore = function(n, s) {
         s
     ]);
 };
+
+exports.getHighscore = function() {
+    return db.query(`SELECT * FROM highscore ORDER BY score DESC LIMIT 10`);
+};

@@ -1,6 +1,5 @@
 import React from "react";
-// import axios from "./axios";
-import { Route, BrowserRouter, Link } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 
 import Welcome from "./welcome";
 import Question from "./question";

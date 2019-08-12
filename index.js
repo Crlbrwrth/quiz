@@ -18,6 +18,10 @@ app.use(express.static("./public"));
 app.use(cookieSessionMiddleware);
 app.use(compression());
 app.use(csurf());
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -35,6 +39,15 @@ if (process.env.NODE_ENV != "production") {
 app.get("/questions/json", async (req, res) => {
     let questions = await db.get3Questions();
     res.json(questions.rows);
+});
+
+app.get("/score/json", async (req, res) => {
+    let resp = await db.getHighscore();
+    res.json(resp.rows);
+});
+
+app.post("/insert-score/json", async (req, res) => {
+    await db.insertScore(req.body.name, req.body.score);
 });
 
 app.get("*", function(req, res) {

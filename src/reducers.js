@@ -11,6 +11,12 @@ export default function(state = {}, action) {
             question_nr: action.question_nr
         };
     }
+    if (action.type == "GET_HIGHSCORE") {
+        state = {
+            ...state,
+            highscores: action.data
+        };
+    }
 
     return state;
 }

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axios";
 
 export async function getQuestions() {
     const { data } = await axios.get("/questions/json");
@@ -19,5 +19,20 @@ export async function nextQuestion() {
     return {
         type: "NEXT_QUESTION",
         question_nr: counter
+    };
+}
+
+export async function setHighscore(name, score) {
+    await axios.post("/insert-score/json", {
+        name,
+        score
+    });
+}
+
+export async function getHighscore() {
+    let { data } = await axios.get("/score/json");
+    return {
+        type: "GET_HIGHSCORE",
+        data
     };
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getQuestions, nextQuestion } from "./actions";
-import axios from "axios";
+import { getQuestions, nextQuestion, setHighscore } from "./actions";
 
 export default function Question() {
     const [goToNext, setGoToNext] = useState(false);
@@ -19,14 +18,31 @@ export default function Question() {
             )
     );
 
-    const answer = () => {
+    const answer = e => {
+        if (goToNext) return;
+        if (e.target.innerHTML == currQuestion[0].correct) {
+            localStorage.setItem(
+                "playerScore",
+                JSON.parse(localStorage.getItem("playerScore")) + 1
+            );
+            console.log("dog you guessed it!");
+        }
         setGoToNext(true);
     };
 
-    const nextQ = () => {
-        localStorage.getItem("question_nr") < 2
-            ? dispatch(nextQuestion())
-            : location.replace("/endscreen");
+    const nextQ = async () => {
+        if (localStorage.getItem("question_nr") < 2) {
+            setGoToNext(false);
+            dispatch(nextQuestion());
+        } else {
+            dispatch(
+                setHighscore(
+                    localStorage.getItem("playerName"),
+                    localStorage.getItem("playerScore")
+                )
+            );
+            location.replace("/endscreen");
+        }
     };
 
     return (

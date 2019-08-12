@@ -7,6 +7,7 @@ export default function Welcome() {
         if (e.key == "Enter" && e.target.value) {
             e.preventDefault();
             localStorage.setItem("playerName", e.target.value);
+            localStorage.setItem("playerScore", 0);
             location.replace("/question");
         }
     };
