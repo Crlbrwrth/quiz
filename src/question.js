@@ -25,12 +25,22 @@ export default function Question() {
                 "playerScore",
                 JSON.parse(localStorage.getItem("playerScore")) + 1
             );
-            console.log("dog you guessed it!");
+            e.target.classList.add("correct");
+        } else {
+            e.target.classList.add("wrong");
         }
         setGoToNext(true);
     };
 
     const nextQ = async () => {
+        document.getElementsByClassName("wrong")[0]
+            ? document
+                .getElementsByClassName("wrong")[0]
+                .classList.remove("wrong")
+            : document
+                .getElementsByClassName("correct")[0]
+                .classList.remove("correct");
+
         if (localStorage.getItem("question_nr") < 2) {
             setGoToNext(false);
             dispatch(nextQuestion());

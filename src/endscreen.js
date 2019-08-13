@@ -17,7 +17,10 @@ export default function Endscreen() {
 
     return (
         <div className="endscreen">
-            <h1>You got {endScore} questions right</h1>
+            <h1>
+                {localStorage.getItem("playerName")}, you got {endScore}{" "}
+                questions right
+            </h1>
             <hr />
             <h2>All-time Highscore</h2>
             <div className="highscore-list">

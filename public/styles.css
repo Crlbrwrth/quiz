@@ -25,3 +25,15 @@ table {
     margin-right: auto;
     text-align: left;
 }
+
+.correct {
+    transition: 0.5s;
+    background-color: #22bb45;
+    flex-basis: 205px;
+}
+
+.wrong {
+    transition: 0.5s;
+    background-color: tomato;
+    flex-basis: 205px;
+}
