@@ -1,9 +1,11 @@
 import React from "react";
+import { socket } from "./socket";
 
 export default function Welcome() {
     localStorage.setItem("question_nr", 0);
 
     const keyCheck = e => {
+        socket.emit("player-registration", e.target.value);
         if (e.key == "Enter" && e.target.value) {
             e.preventDefault();
             localStorage.setItem("playerName", e.target.value);
