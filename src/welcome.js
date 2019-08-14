@@ -5,8 +5,8 @@ export default function Welcome() {
     localStorage.setItem("question_nr", 0);
 
     const keyCheck = e => {
-        socket.emit("player-registration", e.target.value);
         if (e.key == "Enter" && e.target.value) {
+            socket.emit("player-registration", e.target.value);
             e.preventDefault();
             localStorage.setItem("playerName", e.target.value);
             localStorage.setItem("playerScore", 0);

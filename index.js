@@ -103,12 +103,36 @@ server.listen(8080, function() {
 
 io.on("connection", async function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
-    // if (!socket.request.session.user.id) {
-    //     return socket.disconnect(true);
-    // }
+
     socket.on("player-registration", async name => {
-        socket.request.session.user = {};
-        socket.request.session.user.name = name;
-        console.log("socket.request.session: ", socket.request.session);
+        let id = socket.id;
+        client.get("players", function(err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            if (data) {
+                client.get("players", function(err, data) {
+                    let players = JSON.parse(data);
+                    players.push({ id, name });
+                    players = JSON.stringify(players);
+                    client.set("players", players, function(err, data) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                    });
+                    client.get("players", function(err, data) {
+                        console.log("players now: ", JSON.parse(data));
+                    });
+                });
+            }
+            if (!data) {
+                let players = JSON.stringify([{ id, name }]);
+                client.set("players", players, function(err, data) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+            }
+        });
     });
 });
