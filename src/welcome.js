@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { socket } from "./socket";
 
 export default function Welcome() {
     localStorage.setItem("question_nr", 0);
+    const [registered, setRegistered] = useState();
 
     const keyCheck = e => {
         if (e.key == "Enter" && e.target.value) {
-            socket.emit("player-registration", e.target.value);
             e.preventDefault();
+            socket.emit("player-registration", e.target.value);
             localStorage.setItem("playerName", e.target.value);
             localStorage.setItem("playerScore", 0);
-            location.replace("/question");
+            setRegistered(true);
         }
+    };
+
+    const go = () => {
+        socket.emit("go");
     };
 
     return (
@@ -23,6 +28,7 @@ export default function Welcome() {
                 name="username"
                 defaultValue={"Player " + Math.floor(Math.random() * 10000)}
             />
+            {registered && <button onClick={go}>Let&apos;s go!</button>}
         </div>
     );
 }

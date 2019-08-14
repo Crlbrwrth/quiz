@@ -36,3 +36,16 @@ export async function getHighscore() {
         data
     };
 }
+
+export async function startGame(players) {
+    const { data } = await axios.get("/questions/json");
+    localStorage.setItem("questions", JSON.stringify(data));
+    if (!localStorage.getItem("question_nr")) {
+        localStorage.setItem("question_nr", 0);
+    }
+    return {
+        type: "START_GAME",
+        questions: data,
+        players
+    };
+}

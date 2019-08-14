@@ -93,6 +93,9 @@ app.get("*", function(req, res) {
 
 server.listen(8080, function() {
     console.log("I'm listening.");
+    client.set("players", "[]", (err, data) => {
+        if (err) return console.log(err);
+    });
 });
 
 // let data = {
@@ -104,6 +107,23 @@ server.listen(8080, function() {
 io.on("connection", async function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
 
+    socket.on("disconnect", async function() {
+        console.log("socket disconnected: ", socket.id);
+        client.get("players", function(err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            let players = JSON.parse(data);
+            players = players.filter(ele => ele.id != socket.id);
+            let updPlayers = JSON.stringify(players);
+            client.set("players", updPlayers, function(err, data) {
+                if (err) {
+                    return console.log(err);
+                }
+            });
+        });
+    });
+
     socket.on("player-registration", async name => {
         let id = socket.id;
         client.get("players", function(err, data) {
@@ -112,27 +132,73 @@ io.on("connection", async function(socket) {
             }
             if (data) {
                 client.get("players", function(err, data) {
+                    if (err) {
+                        return console.log(err);
+                    }
                     let players = JSON.parse(data);
-                    players.push({ id, name });
+                    players.push({ id, name, score: 0 });
                     players = JSON.stringify(players);
                     client.set("players", players, function(err, data) {
                         if (err) {
                             return console.log(err);
                         }
                     });
-                    client.get("players", function(err, data) {
-                        console.log("players now: ", JSON.parse(data));
-                    });
                 });
             }
             if (!data) {
-                let players = JSON.stringify([{ id, name }]);
+                let players = JSON.stringify([{ id, name, score: 0 }]);
                 client.set("players", players, function(err, data) {
                     if (err) {
                         return console.log(err);
                     }
                 });
             }
+        });
+    });
+    socket.on("go", async () => {
+        client.get("players", function(err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            let players = JSON.parse(data);
+            for (let i = 0; i < players.length; i++) {
+                if (players[i].id == socket.id) {
+                    players[i].ready = true;
+                    let updPlayers = JSON.stringify(players);
+                    client.set("players", updPlayers, function(err, data) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                    });
+                    if (players.every(ele => ele.ready)) {
+                        console.log("everybody is ready");
+                        io.emit("start game", players);
+                    } else {
+                        console.log("missing players");
+                        break;
+                    }
+                }
+            }
+        });
+    });
+    socket.on("answer", async answer => {
+        console.log("answer clicked by: ", socket.id);
+        console.log("answer: ", answer.num);
+        client.get("players", function(err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            let players = JSON.parse(data);
+            players = players.map(ele => {
+                if (ele.id == socket.id) ele.score += answer.num;
+                return ele;
+            });
+            let updPlayers = JSON.stringify(players);
+            client.set("players", updPlayers, function(err, data) {
+                if (err) {
+                    return console.log(err);
+                }
+            });
         });
     });
 });

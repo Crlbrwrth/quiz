@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getQuestions, nextQuestion, setHighscore } from "./actions";
+import { socket } from "./socket";
 
 export default function Question() {
     const [goToNext, setGoToNext] = useState(false);
-
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getQuestions());
@@ -20,6 +20,10 @@ export default function Question() {
 
     const answer = e => {
         if (goToNext) return;
+        let num;
+        e.target.innerHTML == currQuestion[0].correct ? (num = 1) : (num = 0);
+        socket.emit("answer", { num });
+
         if (e.target.innerHTML == currQuestion[0].correct) {
             localStorage.setItem(
                 "playerScore",

@@ -17,6 +17,14 @@ export default function(state = {}, action) {
             highscores: action.data
         };
     }
+    if (action.type == "START_GAME") {
+        state = {
+            ...state,
+            players: action.players,
+            questions: action.questions,
+            start: true
+        };
+    }
 
     return state;
 }
