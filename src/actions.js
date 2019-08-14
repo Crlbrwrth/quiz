@@ -4,7 +4,7 @@ export async function getQuestions() {
     const { data } = await axios.get("/questions/json");
     localStorage.setItem("questions", JSON.stringify(data));
     if (!localStorage.getItem("question_nr")) {
-        localStorage.setItem("question_nr", 0);
+        localStorage.setItem("question_nr", 1);
     }
     return {
         type: "GET_QUESTIONS",
@@ -40,9 +40,7 @@ export async function getHighscore() {
 export async function startGame(players) {
     const { data } = await axios.get("/questions/json");
     localStorage.setItem("questions", JSON.stringify(data));
-    if (!localStorage.getItem("question_nr")) {
-        localStorage.setItem("question_nr", 0);
-    }
+    localStorage.setItem("question_nr", 1);
     return {
         type: "START_GAME",
         questions: data,
