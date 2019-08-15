@@ -20,12 +20,9 @@ export const init = store => {
             store.dispatch(endGame(players));
         });
 
-        socket.on("block", async () => {
-            console.log("you shall not pass!");
+        socket.on("redirect", destination => {
+            console.log("arrived");
+            window.location.href = destination;
         });
-
-        // socket.on("player-registration", resp => {
-        //     console.log("sth happening in socket.js", resp);
-        // });
     }
 };

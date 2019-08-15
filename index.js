@@ -110,9 +110,6 @@ io.on("connection", async function(socket) {
         if (players[0]) {
             if (players.every(p => p.ready)) {
                 socket.disconnect();
-                // console.log("game is already running");
-                // socket.emit("block");
-                // return;
             }
         }
     });
@@ -229,5 +226,31 @@ io.on("connection", async function(socket) {
                 });
             }
         });
+    });
+    socket.on("restart", async () => {
+        client.set("players", "[]", function(err, data) {
+            if (err) {
+                return console.log(err);
+            }
+        });
+        var destination = "/index.html";
+        io.emit("redirect", destination);
+        // client.get("players", function(err, data) {
+        //     if (err) {
+        //         return console.log(err);
+        //     }
+        //     let players = JSON.parse(data);
+        // players = players.map(p => {
+        //     p.ready = false;
+        //     return p;
+        // });
+
+        //     let updPlayers = JSON.stringify(players);
+        //     client.set("players", updPlayers, function(err, data) {
+        //         if (err) {
+        //             return console.log(err);
+        //         }
+        //     });
+        // });
     });
 });

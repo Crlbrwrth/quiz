@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getHighscore } from "./actions";
+import { socket } from "./socket";
 
 export default function Endscreen() {
     const ranking = useSelector(state => state.ranking);
@@ -30,6 +31,13 @@ export default function Endscreen() {
                         </tbody>
                     ))}
             </table>
+            <button
+                onClick={() => {
+                    socket.emit("restart");
+                }}
+            >
+                Restart
+            </button>
         </div>
     );
 }
