@@ -54,7 +54,7 @@ app.use(compression());
 // ROUTES ***************************
 
 app.get("/questions/json", async (req, res) => {
-    let questions = await db.get3Questions();
+    let questions = await db.get9Questions();
     res.json(questions.rows);
 });
 
@@ -235,22 +235,5 @@ io.on("connection", async function(socket) {
         });
         var destination = "/index.html";
         io.emit("redirect", destination);
-        // client.get("players", function(err, data) {
-        //     if (err) {
-        //         return console.log(err);
-        //     }
-        //     let players = JSON.parse(data);
-        // players = players.map(p => {
-        //     p.ready = false;
-        //     return p;
-        // });
-
-        //     let updPlayers = JSON.stringify(players);
-        //     client.set("players", updPlayers, function(err, data) {
-        //         if (err) {
-        //             return console.log(err);
-        //         }
-        //     });
-        // });
     });
 });

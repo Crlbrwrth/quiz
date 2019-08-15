@@ -21,7 +21,6 @@ export const init = store => {
         });
 
         socket.on("redirect", destination => {
-            console.log("arrived");
             window.location.href = destination;
         });
     }

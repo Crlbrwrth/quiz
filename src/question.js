@@ -71,7 +71,7 @@ export default function Question() {
             num = 0;
         }
         setTimeout(() => {
-            if (localStorage.getItem("question_nr") < 3) {
+            if (localStorage.getItem("question_nr") < 9) {
                 socket.emit("answer", { num });
             } else {
                 socket.emit("answer", { num, over: true });
