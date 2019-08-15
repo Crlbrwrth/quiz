@@ -102,6 +102,20 @@ server.listen(8080, function() {
 
 io.on("connection", async function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
+    client.get("players", function(err, data) {
+        if (err) {
+            return console.log(err);
+        }
+        let players = JSON.parse(data);
+        if (players[0]) {
+            if (players.every(p => p.ready)) {
+                socket.disconnect();
+                // console.log("game is already running");
+                // socket.emit("block");
+                // return;
+            }
+        }
+    });
 
     socket.on("disconnect", async function() {
         console.log("socket disconnected: ", socket.id);

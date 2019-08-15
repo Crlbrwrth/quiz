@@ -12,12 +12,16 @@ export const init = store => {
             store.dispatch(startGame(players));
         });
 
-        socket.on("next question", async players => {
+        socket.on("next question", async () => {
             store.dispatch(nextQuestion());
         });
 
         socket.on("end game", async players => {
             store.dispatch(endGame(players));
+        });
+
+        socket.on("block", async () => {
+            console.log("you shall not pass!");
         });
 
         // socket.on("player-registration", resp => {

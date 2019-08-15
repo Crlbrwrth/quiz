@@ -8,6 +8,7 @@ export default function Question() {
 
     useEffect(() => {
         dispatch(getQuestions());
+        localStorage.setItem("answered", false);
     }, []);
 
     let currQuestion = useSelector(
@@ -26,6 +27,7 @@ export default function Question() {
         document
             .getElementsByClassName("correct")[0]
             .classList.remove("correct");
+        localStorage.setItem("answered", false);
         if (document.getElementsByClassName("wrong")[0]) {
             document
                 .getElementsByClassName("wrong")[0]
@@ -33,7 +35,6 @@ export default function Question() {
         }
     }
 
-    let qAnswer = currQuestion[0].question;
     let answersArr = [];
     answersArr.push(
         currQuestion[0].correct,
@@ -48,6 +49,11 @@ export default function Question() {
     });
 
     const answer = e => {
+        if (JSON.parse(localStorage.getItem("answered")) == true) {
+            console.log("stop cheating");
+            return;
+        }
+        localStorage.setItem("answered", true);
         let num;
         if (e.target.innerHTML == currQuestion[0].correct) {
             e.target.classList.add("correct");
@@ -75,7 +81,8 @@ export default function Question() {
 
     return (
         <div className="questions">
-            <h1>{qAnswer}</h1>
+            <h1>{currQuestion[0].question}</h1>
+            <img src={currQuestion[0].image} />
             {currQuestion &&
                 currQuestion[0] &&
                 sortedArr.map(q => (

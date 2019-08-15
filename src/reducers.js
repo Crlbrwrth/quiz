@@ -26,11 +26,10 @@ export default function(state = {}, action) {
         };
     }
     if (action.type == "END_GAME") {
-        console.log("players in reducers.js: ", action.players);
         let sortedPs = action.players.sort((a, b) =>
             a.score > b.score ? -1 : b.score > a.score ? 1 : 0
         );
-        let reduced = sortedPs.map(ele => {
+        let ranking = sortedPs.map(ele => {
             let newObj = {};
             newObj.name = ele.name;
             newObj.score = ele.score;
@@ -38,7 +37,7 @@ export default function(state = {}, action) {
         });
         state = {
             ...state,
-            ranking: reduced,
+            ranking: ranking,
             finished: true
         };
     }
