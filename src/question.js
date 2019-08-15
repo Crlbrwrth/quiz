@@ -29,8 +29,21 @@ export default function Question() {
 
     console.log("currQuestion: ", currQuestion);
 
-    let qAnswer = currQuestion.question;
+    let qAnswer = currQuestion[0].question;
     console.log("qA: ", qAnswer);
+    let answersArr = [];
+    answersArr.push(
+        currQuestion[0].correct,
+        currQuestion[0].wrong_1,
+        currQuestion[0].wrong_2,
+        currQuestion[0].wrong_3
+    );
+    let sortedArr = answersArr.sort((a, b) => {
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+    });
+    console.log("sortedArr: ", sortedArr);
 
     // const questionNr = useSelector(state => state.question_nr);
 
@@ -93,30 +106,45 @@ export default function Question() {
     // };
 
     return (
-        <div className="question">
-            <h1>Welcome to the Questions Screen</h1>
-
-            {currQuestion && currQuestion[0] && currQuestion.map()}
-
-            {currQuestion && currQuestion[0] && (
-                <div className="question-container">
-                    <h2>{currQuestion[0].question}</h2>
-                    <div className="answers-container">
-                        <div className="q" onClick={answer}>
-                            {currQuestion[0].correct}
-                        </div>
-                        <div className="q" onClick={answer}>
-                            {currQuestion[0].wrong_1}
-                        </div>
-                        <div className="q" onClick={answer}>
-                            {currQuestion[0].wrong_2}
-                        </div>
-                        <div className="q" onClick={answer}>
-                            {currQuestion[0].wrong_3}
-                        </div>
+        <div className="questions">
+            <h1>{qAnswer}</h1>
+            {currQuestion &&
+                currQuestion[0] &&
+                sortedArr.map(q => (
+                    <div
+                        className="q"
+                        onClick={answer}
+                        key={sortedArr.indexOf(q)}
+                    >
+                        {q}
                     </div>
-                </div>
-            )}
+                ))}
         </div>
     );
+
+    // return (
+    //     <div className="question">
+    //         <h1>Welcome to the Questions Screen</h1>
+    //
+    //         {currQuestion && currQuestion[0] && (
+    //             <div className="question-container">
+    //                 <h2>{currQuestion[0].question}</h2>
+    //                 <div className="answers-container">
+    //                     <div className="q" onClick={answer}>
+    //                         {currQuestion[0].correct}
+    //                     </div>
+    //                     <div className="q" onClick={answer}>
+    //                         {currQuestion[0].wrong_1}
+    //                     </div>
+    //                     <div className="q" onClick={answer}>
+    //                         {currQuestion[0].wrong_2}
+    //                     </div>
+    //                     <div className="q" onClick={answer}>
+    //                         {currQuestion[0].wrong_3}
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         )}
+    //     </div>
+    // );
 }
