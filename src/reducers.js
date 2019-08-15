@@ -36,7 +36,6 @@ export default function(state = {}, action) {
             newObj.score = ele.score;
             return newObj;
         });
-        console.log("reduced: ", reduced);
         state = {
             ...state,
             ranking: reduced,

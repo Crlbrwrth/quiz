@@ -3,7 +3,7 @@
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
-const io = require("socket.io")(server, { origins: "localhost:8080" });
+const io = require("socket.io")(server, { origins: "*:*" });
 
 const db = require("./utils/db");
 const csurf = require("csurf");
@@ -98,10 +98,6 @@ server.listen(8080, function() {
     });
 });
 
-// let data = {
-//     ...data,
-//     name: "tom"
-// };
 //SERVER SIDE SOCKET.IO CODE
 
 io.on("connection", async function(socket) {
@@ -131,18 +127,13 @@ io.on("connection", async function(socket) {
                 return console.log(err);
             }
             if (data) {
-                client.get("players", function(err, data) {
+                let players = JSON.parse(data);
+                players.push({ id, name, score: 0 });
+                players = JSON.stringify(players);
+                client.set("players", players, function(err, data) {
                     if (err) {
                         return console.log(err);
                     }
-                    let players = JSON.parse(data);
-                    players.push({ id, name, score: 0 });
-                    players = JSON.stringify(players);
-                    client.set("players", players, function(err, data) {
-                        if (err) {
-                            return console.log(err);
-                        }
-                    });
                 });
             }
             if (!data) {
@@ -202,7 +193,6 @@ io.on("connection", async function(socket) {
                 }
             });
             if (players.every(ele => ele.over)) {
-                console.log("over schmover");
                 return client.get("players", function(err, data) {
                     if (err) {
                         return console.log(err);
@@ -212,7 +202,6 @@ io.on("connection", async function(socket) {
                 });
             }
             if (players.every(ele => ele.answered)) {
-                console.log("next question coming");
                 io.emit("next question", players);
                 players = players.map(ele => {
                     ele.answered = false;

@@ -1,19 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getQuestions, nextQuestion, setHighscore } from "./actions";
+import { getQuestions } from "./actions";
 import { socket } from "./socket";
 
 export default function Question() {
-    // const [goToNext, setGoToNext] = useState(false);
-    // const elemRef = useRef();
-    // const elemRef2 = useRef();
-    // const elemRef3 = useRef();
-    // const elemRef4 = useRef();
-
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("testyyyy");
         dispatch(getQuestions());
     }, []);
 
@@ -27,10 +20,20 @@ export default function Question() {
             )
     );
 
-    console.log("currQuestion: ", currQuestion);
+    let qNr = useSelector(state => state.question_nr);
+
+    if (qNr) {
+        document
+            .getElementsByClassName("correct")[0]
+            .classList.remove("correct");
+        if (document.getElementsByClassName("wrong")[0]) {
+            document
+                .getElementsByClassName("wrong")[0]
+                .classList.remove("wrong");
+        }
+    }
 
     let qAnswer = currQuestion[0].question;
-    console.log("qA: ", qAnswer);
     let answersArr = [];
     answersArr.push(
         currQuestion[0].correct,
@@ -43,67 +46,32 @@ export default function Question() {
         if (a > b) return 1;
         return 0;
     });
-    console.log("sortedArr: ", sortedArr);
-
-    // const questionNr = useSelector(state => state.question_nr);
-
-    // useEffect(
-    //     () => {
-    // if (localStorage.getItem("question_nr") > 1) {
-    //     elemRef.current.className = "q correct";
-    //     elemRef2.current.className = "q wrong";
-    //     elemRef3.current.className = "q wrong";
-    //     elemRef4.current.className = "q wrong";
-    // }
-    //     },
-    //     [questionNr]
-    // );
 
     const answer = e => {
         let num;
-        e.target.innerHTML == currQuestion[0].correct ? (num = 1) : (num = 0);
-        // if (e.target.innerHTML == currQuestion[0].correct) {
-        // localStorage.setItem(
-        //     "playerScore",
-        //     JSON.parse(localStorage.getItem("playerScore")) + 1
-        // );
-        // e.target.classList.add("correct");
-        // }
-        // else {
-        //     e.target.classList.add("wrong");
-        // }
-        // setGoToNext(true);
-        if (localStorage.getItem("question_nr") < 3) {
-            socket.emit("answer", { num });
+        if (e.target.innerHTML == currQuestion[0].correct) {
+            e.target.classList.add("correct");
+            num = 1;
         } else {
-            console.log("game over");
-            socket.emit("answer", { num, over: true });
+            e.target.classList.add("wrong");
+            let i = JSON.parse(localStorage.getItem("question_nr") - 1);
+            let quest = JSON.parse(localStorage.getItem("questions"));
+            let qs = document.getElementsByClassName("q");
+            for (let j = 0; j < qs.length; j++) {
+                if (quest[i].correct == qs[j].innerHTML) {
+                    qs[j].classList.add("correct");
+                }
+            }
+            num = 0;
         }
+        setTimeout(() => {
+            if (localStorage.getItem("question_nr") < 3) {
+                socket.emit("answer", { num });
+            } else {
+                socket.emit("answer", { num, over: true });
+            }
+        }, 1000);
     };
-
-    // const nextQ = async () => {
-    //     console.log("this is happening");
-    //     document.getElementsByClassName("wrong")[0]
-    //         ? document
-    //             .getElementsByClassName("wrong")[0]
-    //             .classList.remove("wrong")
-    //         : document
-    //             .getElementsByClassName("correct")[0]
-    //             .classList.remove("correct");
-    //
-    //     if (localStorage.getItem("question_nr") < 3) {
-    //         // setGoToNext(false);
-    //         dispatch(nextQuestion());
-    //     } else {
-    //         dispatch(
-    //             setHighscore(
-    //                 localStorage.getItem("playerName"),
-    //                 localStorage.getItem("playerScore")
-    //             )
-    //         );
-    //         location.replace("/endscreen");
-    //     }
-    // };
 
     return (
         <div className="questions">
@@ -121,30 +89,4 @@ export default function Question() {
                 ))}
         </div>
     );
-
-    // return (
-    //     <div className="question">
-    //         <h1>Welcome to the Questions Screen</h1>
-    //
-    //         {currQuestion && currQuestion[0] && (
-    //             <div className="question-container">
-    //                 <h2>{currQuestion[0].question}</h2>
-    //                 <div className="answers-container">
-    //                     <div className="q" onClick={answer}>
-    //                         {currQuestion[0].correct}
-    //                     </div>
-    //                     <div className="q" onClick={answer}>
-    //                         {currQuestion[0].wrong_1}
-    //                     </div>
-    //                     <div className="q" onClick={answer}>
-    //                         {currQuestion[0].wrong_2}
-    //                     </div>
-    //                     <div className="q" onClick={answer}>
-    //                         {currQuestion[0].wrong_3}
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         )}
-    //     </div>
-    // );
 }
