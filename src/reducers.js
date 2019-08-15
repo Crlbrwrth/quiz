@@ -25,6 +25,24 @@ export default function(state = {}, action) {
             start: true
         };
     }
+    if (action.type == "END_GAME") {
+        console.log("players in reducers.js: ", action.players);
+        let sortedPs = action.players.sort((a, b) =>
+            a.score > b.score ? -1 : b.score > a.score ? 1 : 0
+        );
+        let reduced = sortedPs.map(ele => {
+            let newObj = {};
+            newObj.name = ele.name;
+            newObj.score = ele.score;
+            return newObj;
+        });
+        console.log("reduced: ", reduced);
+        state = {
+            ...state,
+            ranking: reduced,
+            finished: true
+        };
+    }
 
     return state;
 }

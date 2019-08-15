@@ -182,7 +182,6 @@ io.on("connection", async function(socket) {
         });
     });
     socket.on("answer", async answer => {
-        console.log("answer", answer);
         client.get("players", function(err, data) {
             if (err) {
                 return console.log(err);
@@ -192,6 +191,7 @@ io.on("connection", async function(socket) {
                 if (ele.id == socket.id) {
                     ele.score += answer.num;
                     ele.answered = true;
+                    ele.over = answer.over;
                 }
                 return ele;
             });
@@ -201,7 +201,16 @@ io.on("connection", async function(socket) {
                     return console.log(err);
                 }
             });
-            if (players.every(ele => ele.over)) console.log("over schmover");
+            if (players.every(ele => ele.over)) {
+                console.log("over schmover");
+                return client.get("players", function(err, data) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    let players = JSON.parse(data);
+                    io.emit("end game", players);
+                });
+            }
             if (players.every(ele => ele.answered)) {
                 console.log("next question coming");
                 io.emit("next question", players);
@@ -215,7 +224,6 @@ io.on("connection", async function(socket) {
                         return console.log(err);
                     }
                 });
-                console.log("players after map", players);
             }
         });
     });

@@ -47,3 +47,13 @@ export async function startGame(players) {
         players
     };
 }
+
+export async function endGame(players) {
+    return {
+        type: "END_GAME",
+        players
+    };
+}
+
+//
+//

@@ -1,5 +1,5 @@
 import * as io from "socket.io-client";
-import { getQuestions, nextQuestion, startGame } from "./actions";
+import { getQuestions, nextQuestion, startGame, endGame } from "./actions";
 
 export let socket;
 
@@ -13,8 +13,11 @@ export const init = store => {
         });
 
         socket.on("next question", async players => {
-            console.log("players in socket on next q: ", players);
             store.dispatch(nextQuestion());
+        });
+
+        socket.on("end game", async players => {
+            store.dispatch(endGame(players));
         });
 
         // socket.on("player-registration", resp => {

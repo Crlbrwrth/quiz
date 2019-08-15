@@ -22,6 +22,7 @@ export default function App() {
     } else if (start && !finished) {
         return <Question />;
     } else if (start && finished) {
+        console.log("here we are");
         return <Endscreen />;
     }
 }
