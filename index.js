@@ -11,16 +11,19 @@ const db = require("./utils/db");
 const csurf = require("csurf");
 const compression = require("compression");
 const cookieSession = require("cookie-session");
+const cookieParser = require("cookie-parser");
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always angry.`,
     maxAge: 1000 * 60 * 60 * 24 * 90
 });
 
 var redis = require("redis");
-var client = redis.createClient({
-    host: "localhost",
-    port: 6379
-});
+var client = redis.createClient(
+    process.env.REDIS_URL || {
+        host: "localhost",
+        port: 6379
+    }
+);
 client.on("error", function(err) {
     console.log(err);
 });
@@ -93,7 +96,7 @@ app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
-server.listen(8080, function() {
+server.listen(process.env.PORT || 8080, function() {
     console.log("I'm listening.");
     client.set("players", "[]", (err, data) => {
         if (err) return console.log(err);

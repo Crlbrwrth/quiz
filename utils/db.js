@@ -1,7 +1,9 @@
 // sudo service postgresql start
 
 var spicedPg = require("spiced-pg");
-var db = spicedPg("postgres:postgres:asus@localhost:5432/quiz");
+var db =
+    process.env.DATABASE_URL ||
+    spicedPg("postgres:postgres:asus@localhost:5432/quiz");
 
 exports.get9Questions = function() {
     return db.query(`SELECT * FROM questions LIMIT 9`);
