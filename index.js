@@ -61,8 +61,12 @@ app.use(compression());
 // ROUTES ***************************
 
 app.get("/questions/json", async (req, res) => {
-    let questions = await db.get9Questions();
-    res.json(questions.rows);
+    try {
+        let questions = await db.get9Questions();
+        res.json(questions.rows);
+    } catch (e) {
+        console.log(e.message);
+    }
 });
 
 app.get("/score/json", async (req, res) => {
