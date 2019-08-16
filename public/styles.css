@@ -65,6 +65,7 @@ input {
     border-style: none;
     padding: 8px;
     font-family: inherit;
+    cursor: pointer;
 }
 input:active {
 }
@@ -83,6 +84,7 @@ input:active {
     padding: 5px;
     border: 1px solid black;
     width: 250px;
+    cursor: pointer;
 }
 .q:hover {
     cursor: pointer;
