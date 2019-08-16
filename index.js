@@ -5,7 +5,9 @@
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
-const io = require("socket.io")(server, { origins: "*:*" });
+const io = require("socket.io")(server, {
+    origins: "localhost:8080 multiplayer-quiz.herokuapp.com:*"
+});
 
 const db = require("./utils/db");
 const csurf = require("csurf");
