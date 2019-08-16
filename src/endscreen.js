@@ -25,7 +25,7 @@ export default function Endscreen() {
                         <tbody className="result" key={ranking.indexOf(r)}>
                             <tr>
                                 <th>{ranking.indexOf(r) + 1}. Place</th>
-                                <td>{r.name}</td>
+                                <td className="name">{r.name}</td>
                                 <td> {r.score} correct answers</td>
                             </tr>
                         </tbody>

@@ -1,3 +1,5 @@
+//Link: https://git.heroku.com/multiplayer-quiz.git
+
 //REQUREMENTS********************
 
 const express = require("express");
@@ -233,7 +235,7 @@ io.on("connection", async function(socket) {
                 return console.log(err);
             }
         });
-        var destination = "/index.html";
+        var destination = "/";
         io.emit("redirect", destination);
     });
 });

@@ -83,17 +83,19 @@ export default function Question() {
         <div className="questions">
             <h1>{currQuestion[0].question}</h1>
             <img src={currQuestion[0].image} />
-            {currQuestion &&
-                currQuestion[0] &&
-                sortedArr.map(q => (
-                    <div
-                        className="q"
-                        onClick={answer}
-                        key={sortedArr.indexOf(q)}
-                    >
-                        {q}
-                    </div>
-                ))}
+            <div className="answers-container">
+                {currQuestion &&
+                    currQuestion[0] &&
+                    sortedArr.map(q => (
+                        <div
+                            className="q"
+                            onClick={answer}
+                            key={sortedArr.indexOf(q)}
+                        >
+                            {q}
+                        </div>
+                    ))}
+            </div>
         </div>
     );
 }

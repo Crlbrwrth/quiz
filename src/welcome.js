@@ -7,6 +7,7 @@ export default function Welcome() {
 
     const keyCheck = e => {
         if (e.key == "Enter" && e.target.value) {
+            if (registered) return;
             e.preventDefault();
             socket.emit("player-registration", e.target.value);
             localStorage.setItem("playerName", e.target.value);
