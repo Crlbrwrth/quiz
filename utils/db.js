@@ -2,16 +2,16 @@
 
 var spicedPg = require("spiced-pg");
 
-let db;
-if (process.env.DATABASE_URL) {
-    db = spicedPg(process.env.DATABASE_URL);
-} else {
-    db = spicedPg("postgres:postgres:asus@localhost:5432/signatures");
-}
+// let db;
+// if (process.env.DATABASE_URL) {
+//     db = spicedPg(process.env.DATABASE_URL);
+// } else {
+//     db = spicedPg("postgres:postgres:asus@localhost:5432/signatures");
+// }
 
-// var db =
-//     process.env.DATABASE_URL ||
-//     spicedPg("postgres:postgres:asus@localhost:5432/quiz");
+var db =
+    process.env.DATABASE_URL ||
+    spicedPg("postgres:postgres:asus@localhost:5432/quiz");
 
 exports.get9Questions = function() {
     return db.query(`SELECT * FROM questions LIMIT 9`);
