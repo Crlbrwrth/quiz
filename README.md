@@ -20,7 +20,7 @@ Real-time online multiplayer quiz game using Socket.IO.
 
 ### In-game Screen
 
-<img src="./imgame.png"/>
+<img src="./ingame.png"/>
 
 ### End Screen
 
